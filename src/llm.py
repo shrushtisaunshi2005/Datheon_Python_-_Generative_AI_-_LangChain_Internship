@@ -1,9 +1,10 @@
 import os
+import time
+
 from dotenv import load_dotenv
 from google import genai
 
 from models import ResumeData
-
 
 load_dotenv()
 
@@ -14,10 +15,14 @@ if not api_key:
 
 client = genai.Client(api_key=api_key)
 
+MODEL_NAME = "gemini-3.8-flash"
+
 
 def extract_resume_data(input_text: str) -> ResumeData:
     """
     Extract structured resume information from unstructured text.
+
+    Retries temporary Gemini service failures before returning an error.
     """
 
     prompt = f"""
@@ -36,15 +41,39 @@ Resume text:
 {input_text}
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.8-flash",
-        contents=prompt,
-        config={
-            "response_mime_type": "application/json",
-            "response_json_schema": ResumeData.model_json_schema(),
-        },
-    )
+    max_attempts = 3
 
-    result = ResumeData.model_validate_json(response.text)
+    for attempt in range(1, max_attempts + 1):
+        try:
+            response = client.models.generate_content(
+                model=MODEL_NAME,
+                contents=prompt,
+                config={
+                    "response_mime_type": "application/json",
+                    "response_json_schema": ResumeData.model_json_schema(),
+                },
+            )
 
-    return result
+            return ResumeData.model_validate_json(response.text)
+
+        except Exception as error:
+            error_message = str(error)
+
+            is_temporary_error = (
+                "503" in error_message
+                or "UNAVAILABLE" in error_message
+                or "Server disconnected" in error_message
+            )
+
+            if not is_temporary_error or attempt == max_attempts:
+                raise
+
+            wait_seconds = 2 ** attempt
+
+            print(
+                f"Gemini temporarily unavailable. "
+                f"Retrying in {wait_seconds} seconds "
+                f"(attempt {attempt}/{max_attempts})..."
+            )
+
+            time.sleep(wait_seconds)

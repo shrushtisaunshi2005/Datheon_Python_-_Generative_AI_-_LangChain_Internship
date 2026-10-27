@@ -1,31 +1,48 @@
+from pathlib import Path
+
+from file_parser import extract_text_from_file
 from llm import extract_resume_data
-import time
+
 
 def main():
     print("=== Datheon Task 1: Resume JSON Extractor ===")
-    print("Paste the resume text below.")
-    print("When finished, press Enter twice.\n")
+    print("Supported files: .txt, .pdf, .docx\n")
 
-    lines = []
+    file_path = input("Enter the resume file path: ").strip()
 
-    while True:
-        line = input()
-
-        if line == "":
-            break
-
-        lines.append(line)
-
-    input_text = "\n".join(lines)
-
-    if not input_text.strip():
-        print("No text provided.")
+    if not file_path:
+        print("No file path provided.")
         return
 
     try:
+        # Check that the file exists
+        if not Path(file_path).exists():
+            print(f"File not found: {file_path}")
+            return
+
+        # Extract text from the file
+        print("\nReading resume...")
+        input_text = extract_text_from_file(file_path)
+
+        input_text = extract_text_from_file(file_path)
+
+        # Clean extracted text before sending it to the LLM
+        input_text = "\n".join(
+        line.strip()
+        for line in input_text.splitlines()
+        if line.strip()
+)
+
+        if not input_text.strip():
+            print("No readable text found in the file.")
+            return
+
+        # Send extracted text to Gemini
+        print("Extracting structured information with Gemini...")
         result = extract_resume_data(input_text)
 
-        print("\n=== Extracted Data ===")
+        # Display JSON result
+        print("\n=== Extracted JSON ===")
         print(result.model_dump_json(indent=4))
 
     except ValueError as error:
