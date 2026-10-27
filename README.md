@@ -1,171 +1,130 @@
-# Structured LLM Prompt Pipeline & JSON Extractor
+# Datheon Task 1 – Structured LLM Prompt Pipeline & JSON Extractor
 
-A Python-based Generative AI application that extracts structured information from unstructured resume text using Google's Gemini API and validates the result with Pydantic.
+A Python-based resume information extractor built for the **Datheon Python + Generative AI & LangChain Internship**.
 
-## 📌 Project Overview
+The application accepts an unstructured resume file and uses **Google Gemini** to extract structured information into validated JSON.
 
-This project is part of the **Datheon Python + Generative AI & LangChain Internship**.
+## Features
 
-The application accepts unstructured resume text and uses a Large Language Model (LLM) to extract important candidate information into a structured JSON format.
+- Supports **TXT, PDF, and DOCX** resume files
+- Extracts resume information using Google Gemini
+- Produces structured JSON output
+- Validates extracted data using **Pydantic**
+- Provides a command-line interface
+- Safely processes uploaded/local resume files
 
-### Extracted Information
+## Extracted Fields
+
+The application extracts:
 
 - Name
 - Email
-- Phone number
+- Phone
 - Job title
-- Years of professional experience
+- Years of experience
 - Skills
 
-The extracted response is validated using a Pydantic model to ensure the output follows the expected structure.
-
-## 🏗️ Project Structure
+## Project Structure
 
 ```text
 datheon-task-1/
-│
-├── src/
-│   ├── main.py
-│   ├── models.py
-│   └── llm.py
-│
-├── .env
 ├── .gitignore
+├── README.md
 ├── requirements.txt
-└── README.md
+└── src/
+    ├── file_parser.py
+    ├── llm.py
+    ├── main.py
+    └── models.py
 ```
 
-## ⚙️ Technologies Used
+## Technologies Used
 
 - Python
 - Google Gemini API
-- Google GenAI Python SDK
+- `google-genai`
 - Pydantic
 - python-dotenv
-- JSON
+- PyPDF
+- python-docx
 
-## 🔄 How It Works
+## Setup
 
-```text
-Resume Text
-    ↓
-Prompt Construction
-    ↓
-Google Gemini
-    ↓
-Structured JSON Response
-    ↓
-Pydantic Validation
-    ↓
-Validated Resume Data
-```
+Clone the repository and navigate to the Task 1 directory.
 
-## 🚀 Setup
-
-### 1. Create and activate the virtual environment
+Create and activate a virtual environment:
 
 ```powershell
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+venv\Scripts\Activate.ps1
 ```
 
-### 2. Install dependencies
+Install the required dependencies:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-### 3. Configure the API key
-
-Create a `.env` file in the project root:
+Create a `.env` file in the project directory:
 
 ```text
 GEMINI_API_KEY=your_api_key_here
 ```
 
-Do not commit your API key to GitHub.
+**Never commit your `.env` file or API key to GitHub.**
 
-## ▶️ Run the Application
+## Run the Application
 
-From the project directory:
+From the `datheon-task-1` directory:
 
 ```powershell
-python src\main.py
+python src/main.py
 ```
 
-Paste resume text into the terminal and press Enter twice when finished.
+The application will ask for the path to a resume file.
 
-## 🧪 Testing
+Example:
 
-The application was tested with multiple resume inputs.
+```text
+Enter the resume file path: test_resume.docx
+```
 
-### Test 1 — Complete Resume
+The application reads the file, sends the extracted text to Gemini, and returns structured JSON.
 
-The extractor successfully identified:
-
-- Candidate name
-- Email
-- Phone
-- Job title
-- Experience
-- Skills
-
-### Test 2 — Different Candidate
-
-A second resume with a different job title, experience level, and skill set was successfully processed.
-
-### Test 3 — Missing Information
-
-A resume without email and phone information was also processed successfully.
-
-Missing optional fields were returned as:
+## Example Output
 
 ```json
 {
-    "email": null,
-    "phone": null
-}
-```
-
-## 📋 Example Output
-
-```json
-{
-    "name": "Priya Nair",
-    "email": null,
-    "phone": null,
-    "job_title": "Junior Python Developer",
-    "experience_years": 1.0,
+    "name": "Rahul Verma",
+    "email": "rahul.verma@example.com",
+    "phone": "9123456780",
+    "job_title": "Software Engineer",
+    "experience_years": 4.0,
     "skills": [
         "Python",
-        "Django",
+        "Java",
+        "FastAPI",
+        "Docker",
         "Git",
-        "MySQL"
+        "PostgreSQL"
     ]
 }
 ```
 
-## 🎯 Key Learning Outcomes
+## Supported File Formats
 
-This project demonstrates:
+| Format | Supported |
+|---|---|
+| TXT | Yes |
+| PDF | Yes |
+| DOCX | Yes |
 
-- LLM-based information extraction
-- Prompt engineering
-- Structured JSON generation
-- Pydantic data validation
-- Gemini API integration
-- Environment variable management
-- Error handling
-- Testing with different input scenarios
+## Project Objective
 
-## 🔐 Security
+The objective of this task is to demonstrate a structured LLM prompt pipeline that converts unstructured resume content into reliable, validated JSON data.
 
-API credentials are stored in a `.env` file and excluded from version control using `.gitignore`.
+## Datheon Internship
 
-Never upload your Gemini API key to GitHub.
+**Program:** Python + Generative AI & LangChain Internship
 
-## 👩‍💻 Internship Task
-
-**Datheon Internship — Python + Generative AI & LangChain**
-
-**Task:** Structured LLM Prompt Pipeline & JSON Extractor
+**Task:** Task 1 – Structured LLM Prompt Pipeline & JSON Extractor
