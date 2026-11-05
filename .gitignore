@@ -1,5 +1,23 @@
+
+
+# Environment variables and secrets
 .env
+**/.env
+
+# Python virtual environments
 venv/
+.venv/
+
+# Python cache
 __pycache__/
 *.pyc
 
+# Generated vector databases
+**/vector_store/
+
+# Temporary files
+*.tmp
+
+
+# Personal test documents
+**/test_resume.*

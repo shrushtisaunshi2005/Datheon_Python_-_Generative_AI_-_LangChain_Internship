@@ -1,0 +1,11 @@
+Artificial Intelligence (AI) enables computers to perform tasks
+that usually require human intelligence.
+
+Machine Learning is a subset of AI that allows systems to learn
+patterns from data.
+
+Retrieval-Augmented Generation (RAG) retrieves relevant information
+from documents and uses it to generate grounded answers.
+
+Vector embeddings represent text as numerical vectors that help
+identify semantically similar content.

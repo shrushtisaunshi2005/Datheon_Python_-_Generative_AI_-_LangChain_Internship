@@ -1,0 +1,14 @@
+
+google-genai
+python-dotenv
+langchain
+langchain-community
+langchain-text-splitters
+langchain-chroma
+langchain-google-genai
+pypdf
+streamlit
+python-docx
+openpyxl
+pandas
+python-pptx
