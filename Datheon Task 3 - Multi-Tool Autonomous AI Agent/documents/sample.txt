@@ -1,0 +1,7 @@
+Artificial Intelligence (AI) enables computers to perform tasks that normally require human intelligence.
+
+Machine Learning is a subset of AI that allows systems to learn patterns from data.
+
+Retrieval-Augmented Generation (RAG) retrieves relevant information from documents and uses it to generate grounded answers.
+
+Python is a popular programming language used for automation, data analysis, and artificial intelligence.
